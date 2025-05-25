@@ -26,11 +26,13 @@ public class Customer {
     @NotNull(message = "phone cannot be null")
     private String phone;
 
-    @JsonManagedReference // proper json serialization
+    @JsonManagedReference("customer-order")
     @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER) // one customer has many orders
     private List<OrderDetails> orders;
 
-    public Customer() {}
+    public Customer() {
+        
+    }
     
     public Customer(String name, String email, String phone) {
         this.name = name;

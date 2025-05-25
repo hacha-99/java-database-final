@@ -16,19 +16,19 @@ public class OrderDetails {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    @JsonManagedReference
+    @JsonBackReference("customer-order")
     private Customer customer;
 
     @ManyToOne
     @JoinColumn(name = "store_id")
-    @JsonManagedReference
+    // @JsonManagedReference
     private Store store;
 
     private Double totalPrice;
     private LocalDateTime date;
 
     @OneToMany(mappedBy = "order",fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @JsonManagedReference("details-item")
     private List<OrderItem> orderItems;
 
     // Getters and Setters
