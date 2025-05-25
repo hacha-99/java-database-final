@@ -1,49 +1,65 @@
 package com.project.code.Model;
 
+import java.lang.annotation.Inherited;
+import java.util.List;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+
+@Entity
 public class Customer {
 
-// 1. Add 'id' field: 
-//    - Type: private long 
-//    - It should be auto-incremented.
-//    - Use @Id to mark it as the primary key and @GeneratedValue(strategy = GenerationType.IDENTITY) to auto-increment it.
+    @Id // primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto-increment
+    private Long id;
 
-// 2. Add 'name' field:
-//    - Type: private String
-//    - This field cannot be empty, use the @NotNull annotation to enforce this rule.
+    @NotNull(message = "name cannot be null")
+    @Size(min=2)
+    private String name;
 
-    // Example: @NotNull(message = "Name cannot be null")
+    @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}",
+            flags = Pattern.Flag.CASE_INSENSITIVE)
+    @NotNull(message = "email cannot be null")
+    private String email;
 
-// 3. Add 'email' field:
-//    - Type: private String
-//    - This field cannot be empty, use the @NotNull annotation to enforce this rule.
+    @NotNull(message = "phone cannot be null")
+    private String phone;
 
-    // Example: @NotNull(message = "Email cannot be null")
+    @JsonManagedReference // proper json serialization
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER) // one customer has many orders
+    private List<OrderItem> orders;
 
-// 4. Add 'phone' field:
-//    - Type: private String
-//    - This field cannot be empty, use the @NotNull annotation to enforce this rule.
+    public Long  getId() {
+        return id;
+    }
 
-    // Example: @NotNull(message = "Phone cannot be null")
+    public String getName() {
+        return name;
+    }
 
-// 5. Add one-to-many relationship with orders:
-//    - A customer can have multiple orders.
-//    - Use the @OneToMany annotation to establish this relationship.
-//    - Specify "mappedBy = 'customer'" to indicate that the 'customer' field in the 'Order' entity owns the relationship.
-//    - Use @JsonManagedReference to ensure proper JSON serialization of related orders.
+    public String getEmail() {
+        return email;
+    }
 
-    // Example: @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
-    // Example: @JsonManagedReference
+    public String getPhone() {
+        return phone;
+    }
 
-// 6. Getters and Setters:
-//    - For each field ('id', 'name', 'email', 'phone'), add getter and setter methods.
-//    - Example: public Long getId(), public void setId(Long id)
-//    - Example: public String getName(), public void setName(String name)
-//    - Add getters and setters for 'email' and 'phone' fields as well.
+    public setId(Long id) {
+        this.id = id;
+    }
 
-// 7. Ensure to use proper annotations and validate constraints:
-//    - Use @NotNull for fields that cannot be empty like 'name', 'email', and 'phone'.
-//    - Make sure you add the correct annotations for entity mapping and relationship management like @Entity, @Id, @GeneratedValue, @OneToMany, and @JsonManagedReference.
-
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 }
 
