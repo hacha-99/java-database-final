@@ -28,7 +28,15 @@ public class Customer {
 
     @JsonManagedReference // proper json serialization
     @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER) // one customer has many orders
-    private List<OrderItem> orders;
+    private List<OrderDetails> orders;
+
+    public Customer() {}
+    
+    public Customer(String name, String email, String phone) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+    }
 
     public Long  getId() {
         return id;
